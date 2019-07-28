@@ -13,7 +13,7 @@ function buildOpts(opts) {
 
 	newOpts.gridSize = opts.gridSize || opts.size / opts.scale || 8;
 	newOpts.scale = opts.scale || opts.size / opts.gridSize || 4;
-  newOpts.size = newOpts.size || newOpts.gridSize * newOpts.scale 
+  newOpts.size = opts.size || newOpts.gridSize * newOpts.scale 
 
 	return newOpts;
 }
