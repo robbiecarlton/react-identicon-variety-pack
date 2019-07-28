@@ -1,0 +1,36 @@
+.app {
+  padding: 20px;
+}
+.control-row {
+  display: flex;
+}
+
+.control-box {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 236px;
+  height: 98px
+}
+
+.input {
+  margin-right: 10px;
+}
+
+.input-row {
+  margin-bottom: 20px;  
+}
+
+.identicon-row {
+  display: flex;
+  align-items: center;
+}
+
+.identicon-label {
+  margin-left: 20px;
+}
+
+.identicon {
+  margin-right: 10px;
+  margin-bottom: 10px;  
+}
