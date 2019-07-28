@@ -1,68 +1,55 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**React Identicon Variety Pack!** is a react component that displays one of a selection of different identicons. It's useful for turning hard to read computer data (like a cryptographic key) into a form that's easily recognizable for humans. [Here's an overview of the subject](https://barro.github.io/2018/02/avatars-identicons-and-hash-visualization/).
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+`yarn add react-identicon-variety-pack`
 
-### `npm start`
+## Usage
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+import { Network as Identicon } from 'react-identicon-variety-pack'
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+<Identicon
+  size={64}
+  seed={'yourpublickeyorhash'}
+/>
+```
 
-### `npm test`
+## Available styles
+These are the component names, so you can eg `import { Blockies } from 'react-identicon-variety-pack'`.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Network
 
-### `npm run build`
+### Bishop
+Based on [the algorithm](https://aarontoponce.org/drunken_bishop.pdf) used for ssh visual keys.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Rings
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Blockies
+Based on [this library](https://github.com/download13/blockies).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Network Large
 
-### `npm run eject`
+### Discs
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Props
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### seed
+random seed that generates the image.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### size
+size in pixels
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### gridSize
+number of rows and columns in grid *(only relevant for Blockies and Bishop)*.
 
-## Learn More
+### scale
+size of each gird cell in pixes *(only relevant for Blockies and Bishop)*.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## A note about security
+With the (qualified) exception of Bishop<sup>[1](#footnote1)</sup>, these algorithms have **not** been studied for how well behaved they are as hashing functions, with regard to the three properties of preimage resistance, 2nd-preimage resistance and collision resistance. This means I can make no gaurantees about how easy it would be to spoof one of these by finding a seed that generates an image sufficiently close to a desired image. My guess is it would be very hard with any of them, but that's not backed by research. So if you are using these as part of a security protocol, you will have to satisfy yourself that they meet your requirements.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+*<a name="footnote1">1</a>: "Qualified" because while Bishop *has* been studied, it was the ascii art version that was studied. The version presented here is a pixel art version and has very different visual properties.*
 
-### Code Splitting
+[More discussion here](https://netsec.ethz.ch/publications/papers/validation.pdf).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

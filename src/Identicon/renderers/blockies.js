@@ -34,8 +34,13 @@ function buildOpts(opts) {
 
 	seedrand(newOpts.seed);
 
-	newOpts.size = opts.size || 8;
-	newOpts.scale = opts.scale || 4;
+  if (opts.size && opts.gridSize && opts.scale) {
+    throw new Error ("Don't specify size, gridSize *and* scale. Choose two.")    
+  }
+
+	newOpts.gridSize = opts.gridSize || opts.size / opts.scale || 8;
+	newOpts.scale = opts.scale || opts.size / opts.gridSize || 4;
+	newOpts.size = newOpts.size || newOpts.gridSize * newOpts.scale 	
 	newOpts.color = opts.color || encodeColor(createColor())
 	newOpts.bgcolor = opts.bgcolor || encodeColor(createColor())
 	newOpts.spotcolor = opts.spotcolor || encodeColor(createColor())
@@ -44,16 +49,16 @@ function buildOpts(opts) {
 }
 
 export default function renderIcon(opts, canvas) {
-	opts = buildOpts(opts || {});
-	const imageData = createImageData(opts.size);
+	const { gridSize, size, scale, color, spotcolor, bgcolor } = buildOpts(opts || {});
+	const imageData = createImageData(gridSize);
 	const width = Math.sqrt(imageData.length);
 
-	canvas.width = canvas.height = opts.size * opts.scale;
+	canvas.width = canvas.height = size
 
 	const cc = canvas.getContext('2d');
-	cc.fillStyle = opts.bgcolor;
+	cc.fillStyle = bgcolor;
 	cc.fillRect(0, 0, canvas.width, canvas.height);
-	cc.fillStyle = opts.color;
+	cc.fillStyle = color;
 
 	for(let i = 0; i < imageData.length; i++) {
 
@@ -63,9 +68,9 @@ export default function renderIcon(opts, canvas) {
 			const col = i % width;
 
 			// if data is 2, choose spot color, if 1 choose foreground
-			cc.fillStyle = (imageData[i] === 1) ? opts.color : opts.spotcolor;
+			cc.fillStyle = (imageData[i] === 1) ? color : spotcolor;
 
-			cc.fillRect(col * opts.scale, row * opts.scale, opts.scale, opts.scale);
+			cc.fillRect(col * scale, row * scale, scale, scale);
 		}
 	}
 

@@ -7,34 +7,35 @@ function buildOpts(opts) {
 
 	seedrand(newOpts.seed);
 
-	newOpts.size = opts.size || 8;
-	newOpts.scale = opts.scale || 4;
+  if (opts.size && opts.gridSize && opts.scale) {
+    throw new Error ("Don't specify size, gridSize *and* scale. Choose two.")    
+  }
 
+	newOpts.gridSize = opts.gridSize || opts.size / opts.scale || 8;
+	newOpts.scale = opts.scale || opts.size / opts.gridSize || 4;
+	newOpts.size = newOpts.size || newOpts.gridSize * newOpts.scale 	
 	return newOpts;
 }
 
 export default function renderIcon(opts, canvas) {
-	opts = buildOpts(opts || {});
+	const { size } = buildOpts(opts || {});
 
-  const canvasSize = opts.size * opts.scale
-
-	canvas.width = canvas.height = canvasSize
+	canvas.width = canvas.height = size
 
 	const cc = canvas.getContext('2d');
 	cc.fillStyle = encodeColor({h: 0, s: 0, l: 100*rand()})
 	cc.fillRect(0, 0, canvas.width, canvas.height);
-  cc.fillStyle = opts.color;
   const numDiscs = 3 + (rand() * 10)
   for (let i = 0; i < numDiscs; i++) {
     cc.fillStyle = encodeColor(createColor())
     cc.beginPath();
     let radius
     if (i < 2) {
-      radius = rand() * canvasSize
+      radius = rand() * size
     } else {
-      radius = rand() * canvasSize * 0.125
+      radius = rand() * size * 0.125
     }
-    cc.arc(rand()*canvasSize, rand()*canvasSize, radius, 0, 2*Math.PI)
+    cc.arc(rand()*size, rand()*size, radius, 0, 2*Math.PI)
     cc.fill()
   }
 

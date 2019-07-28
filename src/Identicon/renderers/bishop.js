@@ -1,6 +1,26 @@
 import { flatten, isUndefined } from 'lodash'
 import { rand, getBitStream, seedrand, encodeColor, mixColors, createColor } from './utils'
 
+function buildOpts(opts) {
+	const newOpts = {};
+
+	newOpts.seed = opts.seed || Math.floor((Math.random()*Math.pow(10,16))).toString(16);
+
+	seedrand(newOpts.seed);
+
+  if (opts.size && opts.gridSize && opts.scale) {
+    throw new Error ("Don't specify size, gridSize *and* scale. Choose two.")    
+  }
+
+	newOpts.gridSize = opts.gridSize || opts.size / opts.scale || 8;
+	newOpts.scale = opts.scale || opts.size / opts.gridSize || 4;
+	newOpts.size = newOpts.size || newOpts.gridSize * newOpts.scale 		
+	newOpts.color = opts.color || createColor();
+	newOpts.bgcolor = opts.bgcolor || createColor();
+
+	return newOpts;
+}
+
 function createBishopData(size, seed) {
 	const grid = new Array(size).fill(0).map(() => new Array(size).fill(0))
 	let x = Math.floor(rand() * size)
@@ -41,36 +61,19 @@ function createBishopData(size, seed) {
 	return flatten(grid.map(col => col.reverse()))
 }
 
-function buildOpts(opts) {
-	const newOpts = {};
-
-	newOpts.seed = opts.seed || Math.floor((Math.random()*Math.pow(10,16))).toString(16);
-
-	seedrand(newOpts.seed);
-
-	newOpts.size = opts.size || 8;
-	newOpts.scale = opts.scale || 4;
-	newOpts.color = opts.color || createColor();
-	newOpts.bgcolor = opts.bgcolor || createColor();
-
-	return newOpts;
-}
-
 export default function renderIcon(opts, outputCanvas) {
-	opts = buildOpts(opts || {})
-	const imageData = createBishopData(opts.size, opts.seed)
+	const { size, gridSize, scale, seed, color, bgcolor } = buildOpts(opts || {})
+	const imageData = createBishopData(gridSize, seed)
 	const width = Math.sqrt(imageData.length);
 
 	const maxHeight = imageData.reduce((a, b) => Math.max(a, b))
 
 	var canvas = document.createElement('canvas')
 
-	const canvasSize = opts.size * opts.scale
-
-	canvas.width = canvas.height = canvasSize
+	canvas.width = canvas.height = size
 
 	const cc = canvas.getContext('2d');
-	cc.fillStyle = encodeColor(opts.bgcolor);
+	cc.fillStyle = encodeColor(bgcolor);
 	cc.fillRect(0, 0, canvas.width, canvas.height);
 
 	for(let i = 0; i < imageData.length; i++) {
@@ -79,22 +82,21 @@ export default function renderIcon(opts, outputCanvas) {
 			const row = Math.floor(i / width);
 			const col = i % width;
 
-			// if data is 2, choose spot color, if 1 choose foreground
-			cc.fillStyle = encodeColor(mixColors(opts.bgcolor, opts.color, imageData[i]/maxHeight))
+			cc.fillStyle = encodeColor(mixColors(bgcolor, color, imageData[i]/maxHeight))
 
-			cc.fillRect(col * opts.scale, row * opts.scale, opts.scale, opts.scale);
+			cc.fillRect(col * scale, row * scale, scale, scale);
 			// cc.arc(col * opts.scale, row * opts.scale, opts.scale, 0, Math.PI * 2);			
 		}
 	}
 
-	outputCanvas.width = outputCanvas.height = canvasSize
-	const halfCSize = canvasSize/2
+	outputCanvas.width = outputCanvas.height = size
+	const halfCSize = size/2
 	const occ = outputCanvas.getContext('2d')
 	occ.drawImage(canvas, 0, 0, halfCSize, halfCSize)
 	occ.scale(-1, 1)
-	occ.drawImage(canvas, -canvasSize, 0, halfCSize, halfCSize)
+	occ.drawImage(canvas, -size, 0, halfCSize, halfCSize)
 	occ.scale(1, -1)
-	occ.drawImage(outputCanvas, -canvasSize, -canvasSize)
+	occ.drawImage(outputCanvas, -size, -size)
 
 	return outputCanvas
 }

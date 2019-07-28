@@ -7,13 +7,13 @@ import renderRings from './renderers/rings'
 import renderNetwork from './renderers/network'
 import renderNetworkLarge from './renderers/network-large'
 
-export default function Identicon ({ renderIcon, seed, size, scale, circle, className }) {
+export default function Identicon ({ renderIcon, seed, size, gridSize, scale, circle, className }) {
   const canvasRef = useRef(null)
-  useRenderIcon(renderIcon, { seed, size, scale }, canvasRef)
+  useRenderIcon(renderIcon, { seed, size, gridSize, scale }, canvasRef)
 
   const style = circle ? {borderRadius: '50%'} : {}
 
-  return <canvas className={className} style={style} ref={canvasRef} width={size} height={size} />
+  return <canvas className={className} style={style} ref={canvasRef} width={1} height={1} />
 }
 
 export function Blockie (props) {

@@ -11,8 +11,8 @@ const defaultHashes = [
   "HcSCiy9XxO7bkvspb63Jw3ekinYx9aJnhJpoj94jFKwxiHZFYEm5AXxott6bPI9"
 ]
 
-const size = 8
-const scale = 128/size
+const size = 128
+const gridSize = 8
 
 function App() {
   const [hashes, setHashes] = useState(defaultHashes)
@@ -52,13 +52,13 @@ function App() {
         </div>
       </div>
       {!isEmpty(newHash) && components.map(({ Component }, i) => 
-        <Component className='identicon' size={size} scale={scale} seed={newHash} circle={circle} key={i} /> 
+        <Component className='identicon' size={size} gridSize={gridSize} seed={newHash} circle={circle} key={i} /> 
       )}
     </div>
     {components.map(({ Component, label }, i) => 
       <div key={i} className='identicon-row'>
         {hashes.map(hash =>
-          <Component className='identicon' size={size} scale={scale} seed={hash} key={hash} circle={circle} />
+          <Component className='identicon'size={size} gridSize={gridSize} seed={hash} key={hash} circle={circle} />
         )}
         <div className='identicon-label'>{label}</div>
       </div>
