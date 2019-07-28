@@ -1,7 +1,7 @@
 **React Identicon Variety Pack!** is a react component that displays one of a selection of different identicons. It's useful for turning hard to read computer data (like a cryptographic key) into a form that's easily recognizable for humans. [Here's an overview of the subject](https://barro.github.io/2018/02/avatars-identicons-and-hash-visualization/).
 
 ## Live demo
-Here's a [live demo](https://robbiecarlton.github.io/react-identicon-variety-pack/) for your to play with.
+Here's a [live demo](https://robbiecarlton.github.io/react-identicon-variety-pack/) for you to play with.
 
 ## Installation
 
