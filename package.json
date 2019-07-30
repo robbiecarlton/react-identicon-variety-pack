@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "homepage": "https://robbiecarlton.github.io/react-identicon-variety-pack/",
   "repository": "github:robbiecarlton/react-identicon-variety-pack",
-  "main": "/lib/index.js",
+  "main": "lib/index.js",
   "dependencies": {
     "lodash": "^4.17.15"
   },
